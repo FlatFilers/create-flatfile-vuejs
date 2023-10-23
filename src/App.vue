@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
-import Home from './Home.vue'
-import NewSpace from './new-space/NewSpace.vue'
-import ExistingSpace from './existing-space/ExistingSpace.vue'
-import '/src/styles.css'
+import Home from './components/Home.vue'
+import NewSpace from './components/NewSpace.vue'
+import ExistingSpace from './components/ExistingSpace.vue'
+import './styles/styles.css'
 
 const routes = {
   '/': Home,
