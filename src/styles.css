@@ -27,6 +27,35 @@ body {
   --ff-bg-fade: rgba(0, 0, 0, 0.2) !important;
 }
 
+nav {
+}
+
+nav a {
+  color: white;
+  margin: 1em;
+}
+
+.button-container a {
+  border: rgb(101, 201, 101) 1px solid;
+  border-radius: 15px;
+  padding: 0.5em;
+  background-color: rgb(101, 201, 101);
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.button-container a:hover {
+  border: rgb(56, 139, 56) 1px solid;
+  border-radius: 15px;
+  padding: 0.5em;
+  background-color: rgb(56, 139, 56);
+  text-decoration: none;
+}
+
+.new-space-button-container {
+  margin-top: 1em;
+}
+
 /* The default mount element */
 /* #flatfile_iFrameContainer {
 } */
