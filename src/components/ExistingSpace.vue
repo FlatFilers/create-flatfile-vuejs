@@ -38,8 +38,6 @@ const spaceProps = ref({
   displayAsModal: true,
 });
 
-console.log(spaceProps)
-
 fetchData(id).catch(
     (err)=>{
       console.error(err)
