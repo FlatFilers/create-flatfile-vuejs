@@ -45,6 +45,7 @@ const toggleSpace = () => {
 </script>
 
 <template>
+  <h3>Create a New Space</h3>
   <div class="new-space-button-container">
     <button @click="toggleSpace">{{ showSpace ? 'Close' : 'Open' }} space</button>
   </div>

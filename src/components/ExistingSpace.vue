@@ -49,6 +49,7 @@ const toggleSpace = () => {
 </script>
 
 <template >
+  <h3>Use an Existing Space</h3>
   <div class="new-space-button-container" >
     <button @click="toggleSpace" v-if="space.space.accessToken !== ''">
       {{ showSpace ? "Close" : "Open" }} space
