@@ -4,7 +4,7 @@ import path from "path";
 import assetsRouter from "./assetsRouter";
 import homepageRouter from './homepageRouter';
 
-import api, { FlatfileClient } from "@flatfile/api";
+import { FlatfileClient } from "@flatfile/api";
 
 dotenv.config();
 
