@@ -12,7 +12,6 @@ const routes = {
 }
 
 const currentPath = ref(window.location.hash);
-console.log(currentPath)
 
 window.addEventListener('hashchange', () => {
   currentPath.value = window.location.hash

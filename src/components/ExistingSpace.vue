@@ -1,43 +1,30 @@
 <script setup>
 import { ref } from "vue";
 import { UseSpace } from "@flatfile/vue";
-import { getCurrentInstance } from "vue";
 
 const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
-const spaceId = import.meta.env.VITE_SPACE_ID;
+const id = import.meta.env.VITE_SPACE_ID;
 
 const space = ref({
   environmentId,
   space: {
-    id: spaceId,
+    id,
     accessToken: "",
   }
 });
-
-const spaceInfo = ref({
-  spaceId,
-  accessToken: "",
-  environmentId,
-})
 
 const fetchData = async (spaceId) => {
   const response = await fetch(`/api/spaces/${spaceId}`);
   const json = await response.json();
   if(json.error){
-    console.error(json);
     return
   }
   space.value.space.accessToken = json.space.data.accessToken;
-  spaceInfo.value.accessToken = json.space.data.accessToken;
-  console.log(space.value)
-  console.log(spaceInfo.value)
-
 }
 
 const showSpace = ref(false);
-console.log(spaceInfo)
 const spaceProps = ref({
-  spaceInfo,
+  ...space.value,
   closeSpace: {
     operation: "submitActionFg",
     onClose: () => {
@@ -50,20 +37,22 @@ const spaceProps = ref({
   },
   displayAsModal: true,
 });
-fetchData(spaceId).catch(
+
+console.log(spaceProps)
+
+fetchData(id).catch(
     (err)=>{
       console.error(err)
     }
   );
 const toggleSpace = () => {
-  
   showSpace.value = !showSpace.value;
 };
 </script>
 
 <template >
   <div class="new-space-button-container" >
-    <button @click="toggleSpace" v-if="spaceInfo.accessToken !== ''">
+    <button @click="toggleSpace" v-if="space.space.accessToken !== ''">
       {{ showSpace ? "Close" : "Open" }} space
     </button>
   </div>
