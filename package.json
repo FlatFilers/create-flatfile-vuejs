@@ -3,27 +3,32 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "server/index.js",
+  "main": "server/index.ts",
   "scripts": {
     "dev:frontend": "vite",
-    "dev:backend": "nodemon server/index.js",
-    "dev": "concurrently 'npm:dev:frontend' 'npm:dev:backend'",
-    "start": "NODE_ENV=production node server/index.js",
+    "dev:backend": "nodemon",
+    "dev": "concurrently 'npx tsc --watch' 'npm:dev:frontend' 'npm:dev:backend'",
+    "start": "NODE_ENV=production node server/index.ts",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@flatfile/api": "^1.5.24",
     "@flatfile/listener": "^0.3.15",
     "@flatfile/plugin-record-hook": "^1.1.7",
     "@flatfile/vue": "^0.0.3",
+    "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.20",
+    "@types/node": "20.4.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"

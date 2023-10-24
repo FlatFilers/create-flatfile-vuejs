@@ -18,7 +18,7 @@ const parseManifest = async () => {
   if(environment !== "production") return {};
 
   const manifestPath = path.join(path.resolve(), 'dist', "manifest.json");
-  const manifestFile = await fs.readFile(manifestPath);
+  const manifestFile = await fs.readFile(manifestPath, 'utf8');
 
   return JSON.parse(manifestFile);
 }
