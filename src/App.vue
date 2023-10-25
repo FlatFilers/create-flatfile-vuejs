@@ -1,28 +1,3 @@
-<script setup>
-import { ref, computed } from 'vue'
-import Home from './Home.vue'
-import NewSpace from './new-space/NewSpace.vue'
-import ExistingSpace from './existing-space/ExistingSpace.vue'
-import '/src/styles.css'
-
-const routes = {
-  '/': Home,
-  '/new-space': NewSpace,
-  '/existing-space': ExistingSpace,
-}
-
-const currentPath = ref(window.location.hash);
-console.log(currentPath)
-
-window.addEventListener('hashchange', () => {
-  currentPath.value = window.location.hash
-});
-
-const currentView = computed(() => {
-  return routes[currentPath.value.slice(1) || '/'] || NotFound
-});
-</script>
-
 <template>
   <div class="main">
     <h2>
@@ -37,3 +12,27 @@ const currentView = computed(() => {
     </nav>
   </div>
 </template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import Home from './components/Home.vue'
+import NewSpace from './components/NewSpace.vue'
+import ExistingSpace from './components/ExistingSpace.vue'
+import './styles/styles.css'
+
+const routes = {
+  '/': Home,
+  '/new-space': NewSpace,
+  '/existing-space': ExistingSpace,
+}
+
+const currentPath = ref(window.location.hash);
+
+window.addEventListener('hashchange', () => {
+  currentPath.value = window.location.hash
+});
+
+const currentView = computed(() => {
+  return routes[currentPath.value.slice(1) || '/'] || NotFound
+});
+</script>

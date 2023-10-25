@@ -1,7 +1,17 @@
+<template>
+  <h3>Create a New Space</h3>
+  <div class="new-space-button-container">
+    <button @click="toggleSpace">{{ showSpace ? 'Close' : 'Open' }} space</button>
+  </div>
+  <div v-if="showSpace" class="space-wrapper">
+    <UseSpace v-bind="spaceProps" />
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { UseSpace } from '@flatfile/vue';
-import { config as workbook } from "/src/config";
+import { config as workbook } from "/src/workbooks/config";
 import { listener } from '/src/listeners/listener';
 
 const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
@@ -20,7 +30,10 @@ const spaceProps = ref({
   workbook,
   listener,
   autoconfigure:true,
-  themeConfig: { primaryColor: "#546a76", textColor: "#fff" },
+  themeConfig: { 
+    primaryColor: "#546a76", 
+    textColor: "#fff" 
+  },
   userInfo: {
     name: 'username'
   },
@@ -40,12 +53,3 @@ const toggleSpace = () => {
   showSpace.value = !showSpace.value;
 };
 </script>
-
-<template>
-  <div class="new-space-button-container">
-    <button @click="toggleSpace">{{ showSpace ? 'Close' : 'Open' }} space</button>
-  </div>
-  <div v-if="showSpace" class="space-wrapper">
-    <UseSpace v-bind="spaceProps" />
-  </div>
-</template>
