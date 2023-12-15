@@ -18,7 +18,7 @@ app.get('/api/spaces/:id', async (_req, res)=>{
   const {id} = _req.params;
   const flatfile = new FlatfileClient({
     token: process.env.FLATFILE_API_KEY,
-    environment: 'https://api.x.flatfile.com/v1/',
+    environment: 'https://platform.flatfile.com/api/v1',
   });
   try {
     const space = await flatfile.spaces.get(id);

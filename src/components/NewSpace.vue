@@ -1,55 +1,102 @@
-<template>
-  <h3>Create a New Space</h3>
-  <div class="new-space-button-container">
-    <button @click="toggleSpace">{{ showSpace ? 'Close' : 'Open' }} space</button>
-  </div>
-  <div v-if="showSpace" class="space-wrapper">
-    <UseSpace v-bind="spaceProps" />
-  </div>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import { UseSpace } from '@flatfile/vue';
+<script lang="jsx">
+import { ref, defineComponent } from 'vue';
+import { initializeFlatfile } from '@flatfile/vue';
 import { config as workbook } from "/src/workbooks/config";
 import { listener } from '/src/listeners/listener';
 
-const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
-const publishableKey = import.meta.env.VITE_PUBLISHABLE_KEY;
+const sheet = {
+  name: 'Contacts',
+  slug: 'contacts',
+  fields: [
+    {
+      key: 'firstName',
+      type: 'string',
+      label: 'First Name',
+    },
+    {
+      key: 'lastName',
+      type: 'string',
+      label: 'Last Name',
+    },
+    {
+      key: 'email',
+      type: 'string',
+      label: 'Email',
+    },
+  ],
+}
 
+export default defineComponent({
+  setup() {
+    const showSpace = ref(false);
+    const publishableKey = import.meta.env.VITE_PUBLISHABLE_KEY;
+    const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
+    const spaceProps = ref({
+      name: 'Vue Space',
+      environmentId,
+      publishableKey,
+      sheet,
+      onSubmit: async ({ job, sheet }) => {
+        const data = await sheet.allData()
+        output.value = JSON.stringify(data, " ", 2)
+        console.log('onSubmit', data)
+      },
+      onRecordHook: (record, event) => {
+        const firstName = record.get('firstName')
+        const lastName = record.get('lastName')
+        if (firstName && !lastName) {
+          record.set('lastName', 'Rock')
+          record.addInfo('lastName', 'Welcome to the Rock fam')
+        }
+        return record
+      },
+      closeSpace: {
+        operation: 'submitActionFg',
+        onClose: () => { showSpace.value = false; },
+      },
+      themeConfig: { primaryColor: "#546a76", textColor: "#fff" },
+      userInfo: {
+        name: 'my space name'
+      },
+      spaceInfo: {
+        name: 'my space name'
+      },
+      displayAsModal: true,
+      spaceBody: {
+        metadata: {
+          random: 'param'
+        }
+      }
+    });
 
-const showSpace = ref(false);
-const spaceProps = ref({
-  name: 'Vue Space',
-  environmentId,
-  publishableKey,
-  closeSpace: {
-    operation: 'submitActionFg',
-    onClose: () => { showSpace.value = false; },
-  },
-  workbook,
-  listener,
-  autoconfigure:true,
-  themeConfig: { 
-    primaryColor: "#546a76", 
-    textColor: "#fff" 
-  },
-  userInfo: {
-    name: 'username'
-  },
-  spaceInfo: {
-    name: 'space info'
-  },
-  displayAsModal: true,
-  spaceBody: {
-    metadata: {
-      random: 'param'
+    const { Space, OpenEmbed } = initializeFlatfile(spaceProps.value);
+
+    const toggleSpace = () => {
+      showSpace.value = !showSpace.value;
+      OpenEmbed()
+    };
+
+    return {
+      toggleSpace,
+      showSpace,
+      Space
     }
   },
-  
-});
+  render(props, ctx) {
+    const Space = props.Space
 
-const toggleSpace = () => {
-  showSpace.value = !showSpace.value;
-};
+    return (
+      <div>
+        <h3>Create a New Space</h3>
+        <div class="new-space-button-container">
+          <button onClick={props.toggleSpace}>{ props.showSpace ? 'Close' : 'Open' } space</button>
+        </div>
+
+        {props.showSpace && <div class="space-wrapper">
+          <Space />
+        </div>}
+      </div>
+    )
+  },
+});
 </script>
