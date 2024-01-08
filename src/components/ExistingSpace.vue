@@ -1,62 +1,73 @@
-<template >
-  <h3>Use an Existing Space</h3>
-  <div class="new-space-button-container" >
-    <button @click="toggleSpace" v-if="space.space.accessToken !== ''">
-      {{ showSpace ? "Close" : "Open" }} space
-    </button>
-  </div>
-  <div v-if="showSpace" class="space-wrapper">
-    <UseSpace v-bind="spaceProps" />
-  </div>
-</template>
+<script lang="jsx">
+import { ref, defineComponent } from 'vue';
+import { initializeFlatfile } from '@flatfile/vue';
+import { config as workbook } from "/src/workbooks/config";
+import { listener } from '/src/listeners/listener';
 
-<script setup>
-import { ref } from "vue";
-import { UseSpace } from "@flatfile/vue";
-
-const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
-const id = import.meta.env.VITE_SPACE_ID;
-
-const space = ref({
-  environmentId,
-  space: {
-    id,
-    accessToken: "",
-  }
-});
+export default defineComponent({
+  setup() {
+    const showSpace = ref(false);
+    const apiKey = import.meta.env.FLATFILE_API_KEY;
+    const publishableKey = import.meta.env.VITE_PUBLISHABLE_KEY;
+    const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
+    const spaceId = import.meta.env.VITE_SPACE_ID;
+    const spaceProps = ref({
+      environmentId,
+      publishableKey,
+      space: {
+        id: spaceId
+      },
+      closeSpace: {
+        operation: 'submitActionFg',
+        onClose: () => { showSpace.value = false; },
+      },
+      displayAsModal: true
+    });
 
 const fetchData = async (spaceId) => {
   const response = await fetch(`/api/spaces/${spaceId}`);
   const json = await response.json();
+  
   if(json.error){
     return
   }
-  space.value.space.accessToken = json.space.data.accessToken;
+  spaceProps.value.space.accessToken = json.space.data.accessToken;
 }
 
-const showSpace = ref(false);
-const spaceProps = ref({
-  ...space.value,
-  closeSpace: {
-    operation: "submitActionFg",
-    onClose: () => {
-      showSpace.value = false;
-    },
-  },
-  themeConfig: {
-    primaryColor: "#546a76",
-    textColor: "#fff",
-  },
-  displayAsModal: true,
-});
+    const { Space, OpenEmbed } = initializeFlatfile(spaceProps.value);
 
-fetchData(id).catch(
+fetchData(spaceId).catch(
     (err)=>{
       console.error(err)
     }
   );
-const toggleSpace = () => {
-  showSpace.value = !showSpace.value;
-};
-</script>
 
+    const toggleSpace = () => {
+      showSpace.value = !showSpace.value;
+      OpenEmbed()
+    };
+
+    return {
+      toggleSpace,
+      showSpace,
+      Space
+    }
+  },
+  render(props, ctx) {
+    const Space = props.Space
+
+    return (
+      <div>
+        <h3>Use an Existing Space</h3>
+        <div class="new-space-button-container">
+          <button onClick={props.toggleSpace}>{ props.showSpace ? 'Close' : 'Open' } space</button>
+        </div>
+
+        {props.showSpace && <div class="space-wrapper">
+          <Space />
+        </div>}
+      </div>
+    )
+  },
+});
+</script>
