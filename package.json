@@ -8,7 +8,7 @@
     "dev:frontend": "vite",
     "dev:backend": "nodemon",
     "dev": "concurrently 'npx tsc --watch' 'npm:dev:frontend' 'npm:dev:backend'",
-    "start": "NODE_ENV=production ts-node server/index.ts",
+    "start": "NODE_ENV=production tsx server/index.ts",
     "build": "vite build"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "tsx": "^4.7.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
