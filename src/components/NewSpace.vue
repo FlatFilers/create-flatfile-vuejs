@@ -30,10 +30,8 @@ export default defineComponent({
   setup() {
     const showSpace = ref(false);
     const publishableKey = import.meta.env.VITE_PUBLISHABLE_KEY;
-    const environmentId = import.meta.env.VITE_ENVIRONMENT_ID;
     const spaceProps = ref({
       name: 'Vue Space',
-      environmentId,
       publishableKey,
       sheet,
       onSubmit: async ({ job, sheet }) => {
