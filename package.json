@@ -6,9 +6,9 @@
   "main": "server/index.ts",
   "scripts": {
     "dev:frontend": "vite",
-    "dev:backend": "nodemon",
+    "dev:backend": "nodemon --exec node --loader ts-node/esm server/index.ts",
     "dev": "concurrently 'npx tsc --watch' 'npm:dev:frontend' 'npm:dev:backend'",
-    "start": "NODE_ENV=production ts-node server/index.ts",
+    "start": "NODE_ENV=production node --loader ts-node/esm server/index.ts",
     "build": "vite build"
   },
   "dependencies": {
